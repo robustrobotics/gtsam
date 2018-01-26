@@ -691,7 +691,7 @@ ISAM2Result ISAM2::update(
       Impl::ExpmapMasked(theta_, delta_, markedRelinMask, delta_);
     gttoc(expmap);
 
-    result.variablesRelinearized = markedKeys.size();
+    result.variablesRelinearized = markedRelinMask.size();
   } else {
     result.variablesRelinearized = 0;
   }
