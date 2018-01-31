@@ -60,6 +60,16 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	endif()
 endif()
 
+# -Wall in GCC 5+ enables a lot of extraneous warnings in Eigen
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5.0)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated")
+  endif()
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wno-int-in-bool-context -Wno-misleading-indentation")
+  endif()
+endif()
+
 # Set up build type library postfixes
 if(GTSAM_BUILD_TYPE_POSTFIXES)
 	foreach(build_type Debug Timing Profiling RelWithDebInfo MinSizeRel)
