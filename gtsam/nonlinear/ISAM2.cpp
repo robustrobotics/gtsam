@@ -20,6 +20,7 @@ using namespace boost::assign;
 #include <boost/range/adaptors.hpp>
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
 namespace br { using namespace boost::range; using namespace boost::adaptors; }
 
 #include <gtsam/base/timing.h>
