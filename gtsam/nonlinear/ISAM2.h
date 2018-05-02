@@ -535,7 +535,8 @@ public:
       const boost::optional<FastMap<Key,int> >& constrainedKeys = boost::none,
       const boost::optional<FastList<Key> >& noRelinKeys = boost::none,
       const boost::optional<FastList<Key> >& extraReelimKeys = boost::none,
-      bool force_relinearize = false);
+      bool force_relinearize = false,
+      const boost::optional<FastList<Key> >& forceRelinKeys = boost::none);
 
   /** Marginalize out variables listed in leafKeys.  These keys must be leaves
    * in the BayesTree.  Throws MarginalizeNonleafException if non-leaves are

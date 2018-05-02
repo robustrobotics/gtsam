@@ -511,7 +511,8 @@ boost::shared_ptr<KeySet > ISAM2::recalculate(const KeySet& markedKeys, const Ke
 ISAM2Result ISAM2::update(
     const NonlinearFactorGraph& newFactors, const Values& newTheta, const FactorIndices& removeFactorIndices,
     const boost::optional<FastMap<Key,int> >& constrainedKeys, const boost::optional<FastList<Key> >& noRelinKeys,
-    const boost::optional<FastList<Key> >& extraReelimKeys, bool force_relinearize)
+    const boost::optional<FastList<Key> >& extraReelimKeys, bool force_relinearize,
+    const boost::optional<FastList<Key> >& forceRelinKeys)
 {
 
   const bool debug = ISDEBUG("ISAM2 update");
@@ -530,7 +531,7 @@ ISAM2Result ISAM2::update(
   ISAM2Result result;
   if(params_.enableDetailedResults)
     result.detail = ISAM2Result::DetailedResults();
-  const bool relinearizeThisStep = force_relinearize
+  const bool relinearizeThisStep = force_relinearize || (forceRelinKeys && !forceRelinKeys->empty())
       || (params_.enableRelinearization && update_count_ % params_.relinearizeSkip == 0);
 
   if(verbose) {
@@ -633,6 +634,18 @@ ISAM2Result ISAM2::update(
   KeySet relinKeys;
   if (relinearizeThisStep) {
     gttic(gather_relinearize_keys);
+    // Add forced relin keys
+    if (forceRelinKeys) {
+      BOOST_FOREACH(Key key, *forceRelinKeys) {
+        if (!fixedVariables_.exists(key)) {
+          relinKeys.insert(key);
+        } else {
+          std::cout << "Unable to relinearize fixed key " << gtsam::DefaultKeyFormatter(key)
+                    << ". Skipping. " << std::endl;
+        }
+      }
+    }
+
     // 4. Mark keys in \Delta above threshold \beta: J=\{\Delta_{j}\in\Delta|\Delta_{j}\geq\beta\}.
     if(params_.enablePartialRelinearizationCheck)
       relinKeys = Impl::CheckRelinearizationPartial(roots_, delta_, params_.relinearizeThreshold);
@@ -689,7 +702,7 @@ ISAM2Result ISAM2::update(
       Impl::ExpmapMasked(theta_, delta_, markedRelinMask, delta_);
     gttoc(expmap);
 
-    result.variablesRelinearized = markedKeys.size();
+    result.variablesRelinearized = markedRelinMask.size();
   } else {
     result.variablesRelinearized = 0;
   }

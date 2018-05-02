@@ -291,7 +291,7 @@ elseif("${GTSAM_DEFAULT_ALLOCATOR}" STREQUAL "TBB")
 	set(GTSAM_ALLOCATOR_TBB 1)
 elseif("${GTSAM_DEFAULT_ALLOCATOR}" STREQUAL "tcmalloc")
 	set(GTSAM_ALLOCATOR_STL 1) # tcmalloc replaces malloc, so to use it we use the STL allocator
-	list(APPEND GTSAM_ADDITIONAL_LIBRARIES "tcmalloc")
+	list(APPEND GTSAM_ADDITIONAL_LIBRARIES ${TCMALLOC_LIBRARIES})
 endif()
 
 # Include boost - use 'BEFORE' so that a specific boost specified to CMake

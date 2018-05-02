@@ -24,3 +24,4 @@
 #endif
 
 #include <gtsam/base/deprecated/LieScalar.h>
+
