@@ -33,7 +33,7 @@ namespace gtsam {
 
     // Check that VALUE type is a testable Lie group
     BOOST_CONCEPT_ASSERT((IsTestable<VALUE>));
-    BOOST_CONCEPT_ASSERT((IsLieGroup<VALUE>));
+    // BOOST_CONCEPT_ASSERT((IsLieGroup<VALUE>));
 
   public:
 

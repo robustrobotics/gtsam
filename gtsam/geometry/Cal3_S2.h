@@ -52,7 +52,7 @@ public:
   }
 
   /// constructor from vector
-  Cal3_S2(const Vector &d) :
+  explicit Cal3_S2(const Vector &d) :
       fx_(d(0)), fy_(d(1)), s_(d(2)), u0_(d(3)), v0_(d(4)) {
   }
 
@@ -202,6 +202,22 @@ public:
     return 5;
   }
 
+  inline static Cal3_S2 identity() { return Cal3_S2(); }
+
+  Cal3_S2 operator+(const Vector5& v) const {
+    return Cal3_S2(vector() + v);
+  }
+
+  Cal3_S2 operator+(const Cal3_S2& C2) const {
+    return Cal3_S2(fx_ + C2.fx(), fy_ + C2.fy(), s_ + C2.skew(),
+                   u0_ + C2.px(), v0_ + C2.py());
+  }
+
+  Cal3_S2 operator-(const Cal3_S2& C2) const {
+    return Cal3_S2(fx_ - C2.fx(), fy_ - C2.fy(), s_ - C2.skew(),
+                   u0_ - C2.px(), v0_ - C2.py());
+  }
+
   /// Given 5-dim tangent vector, create new calibration
   inline Cal3_S2 retract(const Vector& d) const {
     return Cal3_S2(fx_ + d(0), fy_ + d(1), s_ + d(2), u0_ + d(3), v0_ + d(4));
@@ -234,9 +250,9 @@ private:
 };
 
 template<>
-struct traits<Cal3_S2> : public internal::Manifold<Cal3_S2> {};
+struct traits<Cal3_S2> : public internal::VectorSpace<Cal3_S2> {};
 
 template<>
-struct traits<const Cal3_S2> : public internal::Manifold<Cal3_S2> {};
+struct traits<const Cal3_S2> : public internal::VectorSpace<Cal3_S2> {};
 
 } // \ namespace gtsam
