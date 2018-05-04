@@ -264,7 +264,7 @@ public:
   /// in the new one gravity, coriolis settings are in PreintegrationParams
   static void Predict(const Pose3& pose_i, const Vector3& vel_i, Pose3& pose_j,
       Vector3& vel_j, const imuBias::ConstantBias& bias_i,
-      PreintegratedMeasurements& pim, const Vector3& n_gravity,
+      const PreintegratedMeasurements& pim, const Vector3& n_gravity,
       const Vector3& omegaCoriolis, const bool use2ndOrderCoriolis = false);
 #endif
 

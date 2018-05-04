@@ -241,7 +241,7 @@ Base(noiseModel::Gaussian::Covariance(pim.preintMeasCov_), pose_i, vel_i,
 
 void ImuFactor::Predict(const Pose3& pose_i, const Vector3& vel_i,
     Pose3& pose_j, Vector3& vel_j, const imuBias::ConstantBias& bias_i,
-    PreintegratedImuMeasurements& pim, const Vector3& n_gravity,
+    const PreintegratedImuMeasurements& pim, const Vector3& n_gravity,
     const Vector3& omegaCoriolis, const bool use2ndOrderCoriolis) {
   // use deprecated predict
   PoseVelocityBias pvb = pim.predict(pose_i, vel_i, bias_i, n_gravity,
